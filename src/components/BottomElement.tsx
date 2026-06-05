@@ -7,9 +7,10 @@ import type { Colors } from "../theme.ts";
 interface BottomElementProps {
   colors: Colors;
   tileWidth: number;
+  mobile?: boolean;
 }
 
-export default function BottomElement({ colors }: BottomElementProps) {
+export default function BottomElement({ colors, mobile }: BottomElementProps) {
   const [hovered, setHovered] = useState<boolean>(false);
 
   const logoFilter = [
@@ -86,25 +87,27 @@ export default function BottomElement({ colors }: BottomElementProps) {
       </svg>
 
       {/* Label — px anchor from tileData, positioned relative to tile div */}
-      <div
-        style={{
-          position: "absolute",
-          left: `${BOTTOM_TILE.lx}px`,
-          top: `${BOTTOM_TILE.ly}px`,
-          width: 0,
-          height: 0,
-          pointerEvents: "none",
-        }}
-      >
-        <TileLabel
-          label={BOTTOM_TILE.label}
-          side={BOTTOM_TILE.side}
-          colors={colors}
-          hovered={hovered}
-          lineWidth={BOTTOM_TILE.lineWidth}
-          gradientStops={BOTTOM_TILE.gradientStops}
-        />
-      </div>
+      {!mobile && (
+        <div
+          style={{
+            position: "absolute",
+            left: `${BOTTOM_TILE.lx}px`,
+            top: `${BOTTOM_TILE.ly}px`,
+            width: 0,
+            height: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <TileLabel
+            label={BOTTOM_TILE.label}
+            side={BOTTOM_TILE.side}
+            colors={colors}
+            hovered={hovered}
+            lineWidth={BOTTOM_TILE.lineWidth}
+            gradientStops={BOTTOM_TILE.gradientStops}
+          />
+        </div>
+      )}
     </div>
   );
 }
