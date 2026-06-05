@@ -2,7 +2,10 @@
 import React, { useState, useEffect } from "react";
 import TopElement from "./TopElement.tsx";
 import BottomElement from "./BottomElement.tsx";
+import { TOP_TILES, BOTTOM_TILE } from "../tileData.ts";
 import type { Colors } from "../theme.ts";
+
+const MOBILE_BREAKPOINT = 600;
 
 interface IsometricStageProps {
   colors: Colors;
@@ -11,6 +14,9 @@ interface IsometricStageProps {
 export default function IsometricStage({ colors }: IsometricStageProps) {
   const [entered, setEntered] = useState<boolean>(false);
   const [floating, setFloating] = useState<boolean>(false);
+  const [mobile, setMobile] = useState<boolean>(
+    () => window.innerWidth < MOBILE_BREAKPOINT,
+  );
 
   useEffect(() => {
     const t1 = setTimeout(() => setEntered(true), 80);
@@ -21,11 +27,17 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
     };
   }, []);
 
+  useEffect(() => {
+    const onResize = () => setMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   // TILE_W: rendered pixel width of each SVG tile element
   // SIDE_W: space on each side for labels (connector 100px + text ~160px + padding)
   const TILE_W = 480;
-  const SIDE_W = 280; // enough for: 100px connector + ~160px text + breathing room
-  const STAGE_W = TILE_W + SIDE_W * 2; // 1040px total
+  const SIDE_W = mobile ? 0 : 280;
+  const STAGE_W = TILE_W + SIDE_W * 2;
   const STAGE_H = 340;
 
   const glowStyle: React.CSSProperties = {
@@ -69,32 +81,62 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
   };
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: `${STAGE_W}px`,
-        height: `${STAGE_H}px`,
-        margin: "0 auto",
-      }}
-    >
-      <style>{`
-        @keyframes isoFloatDown {
-          0%, 100% { transform: translateY(0);   }
-          50%       { transform: translateY(6px); }
-        }
-        @keyframes isoFloatUp {
-          0%, 100% { transform: translateY(0);    }
-          50%       { transform: translateY(-5px); }
-        }
-      `}</style>
+    <>
+      <div
+        style={{
+          position: "relative",
+          width: `${STAGE_W}px`,
+          height: `${STAGE_H}px`,
+          margin: "0 auto",
+        }}
+      >
+        <style>{`
+          @keyframes isoFloatDown {
+            0%, 100% { transform: translateY(0);   }
+            50%       { transform: translateY(6px); }
+          }
+          @keyframes isoFloatUp {
+            0%, 100% { transform: translateY(0);    }
+            50%       { transform: translateY(-5px); }
+          }
+        `}</style>
 
-      <div style={glowStyle} />
-      <div style={bottomStyle}>
-        <BottomElement colors={colors} tileWidth={TILE_W} />
+        <div style={glowStyle} />
+        <div style={bottomStyle}>
+          <BottomElement colors={colors} tileWidth={TILE_W} mobile={mobile} />
+        </div>
+        <div style={topStyle}>
+          <TopElement colors={colors} tileWidth={TILE_W} mobile={mobile} />
+        </div>
       </div>
-      <div style={topStyle}>
-        <TopElement colors={colors} tileWidth={TILE_W} />
-      </div>
-    </div>
+
+      {mobile && (
+        <ul
+          style={{
+            listStyle: "none",
+            margin: "24px 0 0",
+            padding: 0,
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+          }}
+        >
+          {[...TOP_TILES, BOTTOM_TILE].map(({ id, label }) => (
+            <li
+              key={id}
+              style={{
+                fontFamily: "system-ui, -apple-system, sans-serif",
+                fontWeight: 700,
+                fontSize: "22px",
+                color: colors.label,
+                letterSpacing: "0.01em",
+              }}
+            >
+              {label}
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 }

@@ -7,9 +7,10 @@ import type { Colors } from "../theme.ts";
 interface TopElementProps {
   colors: Colors;
   tileWidth: number;
+  mobile?: boolean;
 }
 
-export default function TopElement({ colors }: TopElementProps) {
+export default function TopElement({ colors, mobile }: TopElementProps) {
   const [hoveredTile, setHoveredTile] = useState<string | null>(null);
 
   const iconFilter = [
@@ -150,7 +151,7 @@ export default function TopElement({ colors }: TopElementProps) {
       </svg>
 
       {/* Label overlays — px anchors from tileData, positioned relative to tile div */}
-      {TOP_TILES.map(
+      {!mobile && TOP_TILES.map(
         ({ id, lx, ly, label, side, lineWidth, gradientStops }) => (
           <div
             key={id}
