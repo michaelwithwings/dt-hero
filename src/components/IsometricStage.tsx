@@ -164,6 +164,39 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
             0%, 100% { transform: translateY(0);    }
             50%       { transform: translateY(-5px); }
           }
+          @keyframes iconGlow {
+            0%      { opacity: 0; }
+            60%     { opacity: 0; }
+            70%     { opacity: 1; }
+            80%     { opacity: 1; }
+            90%     { opacity: 0; }
+            100%    { opacity: 0; }
+          }
+          @keyframes perimeterTrace {
+            0%      { stroke-dashoffset: var(--pl); opacity: 1; }
+            8.93%   { stroke-dashoffset: 0;         opacity: 1; }
+            50%     { stroke-dashoffset: 0;         opacity: 1; }
+            57.14%  { stroke-dashoffset: 0;         opacity: 0; }
+            57.15%  { stroke-dashoffset: var(--pl); opacity: 0; }
+            100%    { stroke-dashoffset: var(--pl); opacity: 0; }
+          }
+          @keyframes perimeterTraceBottom {
+            0%      { stroke-dashoffset: var(--pl); opacity: 0; }
+            8.93%   { stroke-dashoffset: var(--pl); opacity: 1; }
+            17.86%  { stroke-dashoffset: 0;         opacity: 1; }
+            50%     { stroke-dashoffset: 0;         opacity: 1; }
+            57.14%  { stroke-dashoffset: 0;         opacity: 0; }
+            57.15%  { stroke-dashoffset: var(--pl); opacity: 0; }
+            100%    { stroke-dashoffset: var(--pl); opacity: 0; }
+          }
+          @keyframes perimeterGlow {
+            0%      { opacity: 0; }
+            21.43%  { opacity: 0; }
+            28.57%  { opacity: 1; }
+            35.71%  { opacity: 1; }
+            42.86%  { opacity: 0; }
+            100%    { opacity: 0; }
+          }
         `}</style>
 
         {!mobile && <div style={glowStyle} />}

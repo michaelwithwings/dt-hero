@@ -27,6 +27,10 @@ export interface Colors {
   bg: string
   heading: string
   glow: string
+  perimeterStroke: string
+  iconHover: string
+  iconHoverGlow1: string
+  iconHoverGlow2: string
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -71,6 +75,10 @@ export function buildColors(hue: number, darkMode: boolean): Colors {
     labelHover:  `hsl(${hue}, 100%, 72%)`,
     bg:          darkMode ? '#000' : '#eef2f7',
     heading:     darkMode ? '#ffffff' : '#0a1628',
-    glow:        `hsla(${hue}, 80%, 40%, 0.12)`,
+    glow:            `hsla(${hue}, 80%, 40%, 0.12)`,
+    perimeterStroke:  `hsl(${hue}, 100%, 72%)`,
+    iconHover:        `hsl(${hue}, 60%, 80%)`,
+    iconHoverGlow1:   `hsla(0, 0%, 100%, 0.9)`,
+    iconHoverGlow2:   `hsla(0, 0%, 100%, 0.4)`,
   }
 }
