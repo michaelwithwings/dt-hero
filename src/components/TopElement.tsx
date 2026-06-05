@@ -9,7 +9,7 @@ interface TopElementProps {
   tileWidth: number;
 }
 
-export default function TopElement({ colors, tileWidth }: TopElementProps) {
+export default function TopElement({ colors }: TopElementProps) {
   const [hoveredTile, setHoveredTile] = useState<string | null>(null);
 
   const iconFilter = [

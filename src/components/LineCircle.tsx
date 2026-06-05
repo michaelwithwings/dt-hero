@@ -1,5 +1,5 @@
 // src/components/LineCircle.tsx
-import React, { useId } from "react";
+import { useId } from "react";
 import type { GradientStop } from "../tileData.ts";
 
 interface LineCircleProps {
