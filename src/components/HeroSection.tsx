@@ -23,7 +23,7 @@ export default function HeroSection() {
     alignItems: "center",
     justifyContent: "center",
     padding: "48px 24px",
-    overflow: "hidden",
+    overflow: "visible",
     transition: "background 0.4s",
   };
 
