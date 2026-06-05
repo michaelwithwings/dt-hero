@@ -11,14 +11,19 @@ interface TileLabelProps {
   hovered: boolean;
   lineWidth: number;
   gradientStops: GradientStop[];
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 export default function TileLabel({
   label,
   side,
   colors,
+  hovered,
   lineWidth,
   gradientStops,
+  onMouseEnter,
+  onMouseLeave,
 }: TileLabelProps) {
   const isLeft = side === "left";
 
@@ -34,7 +39,7 @@ export default function TileLabel({
     flexDirection: isLeft ? "row-reverse" : "row",
     alignItems: "center",
     gap: 0,
-    pointerEvents: "none",
+    pointerEvents: onMouseEnter ? "auto" : "none",
     top: "50%",
     transform: "translateY(-50%)",
     whiteSpace: "nowrap",
@@ -51,10 +56,16 @@ export default function TileLabel({
     fontFamily: "system-ui, -apple-system, sans-serif",
     fontWeight: 700,
     fontSize: "22px",
+    transform: hovered ? "scale(1.23)" : "scale(1)",
+    transformOrigin: isLeft ? "right center" : "left center",
+    transition: "transform 0.2s ease",
     lineHeight: 1.15,
     color: colors.label,
     letterSpacing: "0.01em",
-    ...(isLeft ? { paddingRight: "16px" } : { paddingLeft: "16px" }),
+    width: "12rem",
+    maxWidth: "12rem",
+    whiteSpace: "break-spaces",
+    ...(isLeft ? { paddingRight: "16px", textAlign: "right" } : { paddingLeft: "16px" }),
   };
 
   return (
@@ -67,7 +78,11 @@ export default function TileLabel({
           gradientStops={gradientStops}
         />
       </div>
-      <span style={textStyle}>{label}</span>
+      <span
+        style={{ ...textStyle, cursor: onMouseEnter ? "pointer" : "default" }}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >{label}</span>
     </div>
   );
 }

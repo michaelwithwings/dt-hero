@@ -44,7 +44,7 @@ const LONG_GRADIENT: GradientStop[] = [
 //   transparent for most of the stem, eases in sharply near the dot.
 const LONG_GRADIENT_02: GradientStop[] = [
   { offset: 0, opacity: 0 },
-  { offset: 0.05, opacity: 0 },
+  { offset: 0.02, opacity: 0 },
   { offset: 0.2, opacity: 1 },
   { offset: 1, opacity: 1 },
 ];
@@ -90,7 +90,7 @@ export const TOP_TILES: TopTileMeta[] = [
     rx: 22,
     ry: 14,
     lx: 189,
-    ly: 169,
+    ly: 159,
     lineWidth: 140,
     gradientStops: LONG_GRADIENT_02,
   },
