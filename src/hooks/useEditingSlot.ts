@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useSyncExternalStore } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
 // Module-level singleton so only one EditableText dialog is ever open at once,
 // regardless of where in the tree it was triggered from.
