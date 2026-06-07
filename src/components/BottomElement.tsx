@@ -9,9 +9,12 @@ interface BottomElementProps {
   tileWidth: number;
   mobile?: boolean;
   labelsVisible?: boolean;
+  loggedIn?: boolean;
+  getText?: (id: string, fallback: string) => string;
+  setText?: (id: string, value: string) => void;
 }
 
-export default function BottomElement({ colors, mobile, labelsVisible = false }: BottomElementProps) {
+export default function BottomElement({ colors, mobile, labelsVisible = false, loggedIn = false, getText, setText }: BottomElementProps) {
   const [hovered, setHovered] = useState<boolean>(false);
   const perimeterRef = useRef<SVGPathElement>(null);
   const innerFaceRef = useRef<SVGPathElement>(null);
@@ -263,7 +266,7 @@ export default function BottomElement({ colors, mobile, labelsVisible = false }:
           }}
         >
           <TileLabel
-            label={BOTTOM_TILE.label}
+            label={getText ? getText(BOTTOM_TILE.id, BOTTOM_TILE.label) : BOTTOM_TILE.label}
             side={BOTTOM_TILE.side}
             colors={colors}
             hovered={hovered}
@@ -271,6 +274,9 @@ export default function BottomElement({ colors, mobile, labelsVisible = false }:
             gradientStops={BOTTOM_TILE.gradientStops}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
+            loggedIn={loggedIn}
+            editId={BOTTOM_TILE.id}
+            onCommitLabel={setText ? (next) => setText(BOTTOM_TILE.id, next) : undefined}
           />
         </div>
       )}

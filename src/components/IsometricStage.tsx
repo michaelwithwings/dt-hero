@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import TopElement from "./TopElement.tsx";
 import BottomElement from "./BottomElement.tsx";
+import EditableText from "./EditableText.tsx";
 import { TOP_TILES, BOTTOM_TILE } from "../tileData.ts";
 import { FONT_FAMILY } from "../theme.ts";
 import type { Colors } from "../theme.ts";
@@ -20,9 +21,14 @@ const DESKTOP_BOTTOM_TOP = 120; // px — top offset of bottom tile within stage
 
 interface IsometricStageProps {
   colors: Colors;
+  loggedIn?: boolean;
+  getText?: (id: string, fallback: string) => string;
+  setText?: (id: string, value: string) => void;
 }
 
-export default function IsometricStage({ colors }: IsometricStageProps) {
+export default function IsometricStage({ colors, loggedIn = false, getText, setText }: IsometricStageProps) {
+  const resolveText = (id: string, fallback: string) => (getText ? getText(id, fallback) : fallback);
+  const commitText = (id: string, value: string): void => setText?.(id, value);
   const [entered, setEntered] = useState<boolean>(false);
   const [labelsVisible, setLabelsVisible] = useState<boolean>(false);
   const [floating, setFloating] = useState<boolean>(false);
@@ -214,6 +220,9 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
                 tileWidth={TILE_W}
                 mobile={mobile}
                 labelsVisible={labelsVisible}
+                loggedIn={loggedIn}
+                getText={resolveText}
+                setText={commitText}
               />
             </div>
             <div style={bottomStyle}>
@@ -222,6 +231,9 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
                 tileWidth={TILE_W}
                 mobile={mobile}
                 labelsVisible={labelsVisible}
+                loggedIn={loggedIn}
+                getText={resolveText}
+                setText={commitText}
               />
             </div>
           </>
@@ -233,6 +245,9 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
                 tileWidth={TILE_W}
                 mobile={mobile}
                 labelsVisible={labelsVisible}
+                loggedIn={loggedIn}
+                getText={resolveText}
+                setText={commitText}
               />
             </div>
             <div style={topStyle}>
@@ -241,6 +256,9 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
                 tileWidth={TILE_W}
                 mobile={mobile}
                 labelsVisible={labelsVisible}
+                loggedIn={loggedIn}
+                getText={resolveText}
+                setText={commitText}
               />
             </div>
           </>
@@ -255,23 +273,32 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
             padding: 0,
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
+            gap: loggedIn ? "0px" : "8px",
           }}
         >
-          {[...TOP_TILES, BOTTOM_TILE].map(({ id, label }) => (
-            <li
-              key={id}
-              style={{
-                fontFamily: FONT_FAMILY,
-                fontWeight: 700,
-                fontSize: "22px",
-                color: colors.label,
-                letterSpacing: "0.01em",
-              }}
-            >
-              {label}
-            </li>
-          ))}
+          {[...TOP_TILES, BOTTOM_TILE].map(({ id, label }) => {
+            const text = resolveText(id, label);
+            return (
+              <li
+                key={id}
+                style={{
+                  fontFamily: FONT_FAMILY,
+                  fontWeight: 700,
+                  fontSize: "22px",
+                  lineHeight: loggedIn ? 1.1 : "normal",
+                  color: colors.label,
+                  letterSpacing: "0.01em",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                <EditableText id={id} loggedIn={loggedIn} title="Edit Label Text" value={text} maxLength={25} colors={colors} onCommit={(next: string) => commitText(id, next)}>
+                  {text}
+                </EditableText>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

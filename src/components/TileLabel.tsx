@@ -1,6 +1,7 @@
 // src/components/TileLabel.tsx
 import React from "react";
 import LineCircle from "./LineCircle.tsx";
+import EditIconButton from "./EditIconButton.tsx";
 import { FONT_FAMILY } from "../theme.ts";
 import type { Colors } from "../theme.ts";
 import type { Side, GradientStop } from "../tileData.ts";
@@ -14,6 +15,9 @@ interface TileLabelProps {
   gradientStops: GradientStop[];
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  loggedIn?: boolean;
+  editId?: string;
+  onCommitLabel?: (next: string) => void;
 }
 
 export default function TileLabel({
@@ -25,6 +29,9 @@ export default function TileLabel({
   gradientStops,
   onMouseEnter,
   onMouseLeave,
+  loggedIn = false,
+  editId,
+  onCommitLabel,
 }: TileLabelProps) {
   const isLeft = side === "left";
 
@@ -33,6 +40,7 @@ export default function TileLabel({
   const scale = DOT_DIAMETER / svgVbH;
   const svgVbW = lineWidth + 10;
   const connW = svgVbW * scale;
+  const dotOffset = ((lineWidth + 5) / svgVbW) * connW;
 
   const containerStyle: React.CSSProperties = {
     position: "absolute",
@@ -47,7 +55,16 @@ export default function TileLabel({
     ...(isLeft ? { right: 0 } : { left: 0 }),
   };
 
+  const editIconStyle: React.CSSProperties = {
+    position: "absolute",
+    top: "50%",
+    ...(isLeft ? { right: `${dotOffset}px` } : { left: `${dotOffset}px` }),
+    transform: `translate(${isLeft ? "50%" : "-50%"}, calc(-50% - ${DOT_DIAMETER / 2 + 18}px))`,
+    pointerEvents: "auto",
+  };
+
   const connectorStyle: React.CSSProperties = {
+    position: "relative",
     width: `${connW}px`,
     height: `${DOT_DIAMETER}px`,
     flexShrink: 0,
@@ -86,11 +103,26 @@ export default function TileLabel({
           gradientStops={gradientStops}
         />
       </div>
+      {editId && onCommitLabel && loggedIn && (
+        <EditIconButton
+          id={editId}
+          title="Edit Label Text"
+          value={label}
+          maxLength={25}
+          colors={colors}
+          onCommit={onCommitLabel}
+          style={editIconStyle}
+        />
+      )}
       <span
         style={{
           ...textStyle,
           cursor: onMouseEnter ? "pointer" : "default",
-          pointerEvents: onMouseEnter ? "auto" : "none",
+          pointerEvents: onMouseEnter || loggedIn ? "auto" : "none",
+          display: "inline-flex",
+          alignItems: "baseline",
+          justifyContent: isLeft ? "flex-end" : "flex-start",
+          gap: "6px",
         }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
