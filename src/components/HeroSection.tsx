@@ -1,6 +1,6 @@
 // src/components/HeroSection.tsx
 import React, { useState, useCallback } from "react";
-import { buildColors, DEFAULT_HUE, DEFAULT_DARKMODE } from "../theme.ts";
+import { buildColors, DEFAULT_HUE, DEFAULT_DARKMODE, FONT_FAMILY } from "../theme.ts";
 import ThemeControls from "./ThemeControls.tsx";
 import IsometricStage from "./IsometricStage.tsx";
 
@@ -28,8 +28,8 @@ export default function HeroSection() {
   };
 
   const headingStyle: React.CSSProperties = {
-    fontFamily: "system-ui, -apple-system, sans-serif",
-    fontWeight: 700,
+    fontFamily: FONT_FAMILY,
+    fontWeight: 600,
     fontSize: "clamp(28px, 5vw, 64px)",
     lineHeight: 1.05,
     letterSpacing: "-0.02em",
@@ -48,8 +48,27 @@ export default function HeroSection() {
         &amp; service suite
       </h1>
 
-      <IsometricStage colors={colors} />
+      <div style={{ display: "flex", gap: "24px", marginBottom: "32px" }}>
+        <a
+          href="https://www.directtransact-home.co.za/developers"
+          target="_blank"
+          rel="noopener noreferrer"
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#9aa0a6")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = colors.heading)}
+          style={{
+            fontFamily: FONT_FAMILY,
+            fontSize: "16px",
+            fontWeight: 700,
+            color: colors.heading,
+            textDecoration: "none",
+            transition: "color 0.2s",
+          }}
+        >
+          See Original &gt;
+        </a>
+      </div>
 
+      <IsometricStage colors={colors} />
       <ThemeControls
         hue={hue}
         setHue={setHue}

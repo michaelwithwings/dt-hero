@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import TopElement from "./TopElement.tsx";
 import BottomElement from "./BottomElement.tsx";
 import { TOP_TILES, BOTTOM_TILE } from "../tileData.ts";
+import { FONT_FAMILY } from "../theme.ts";
 import type { Colors } from "../theme.ts";
 
 const MOBILE_BREAKPOINT = 900;
@@ -23,6 +24,7 @@ interface IsometricStageProps {
 
 export default function IsometricStage({ colors }: IsometricStageProps) {
   const [entered, setEntered] = useState<boolean>(false);
+  const [labelsVisible, setLabelsVisible] = useState<boolean>(false);
   const [floating, setFloating] = useState<boolean>(false);
   const [mobile, setMobile] = useState<boolean>(
     () => window.innerWidth < MOBILE_BREAKPOINT,
@@ -36,10 +38,12 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
 
   useEffect(() => {
     const t1 = setTimeout(() => setEntered(true), 80);
-    const t2 = setTimeout(() => setFloating(true), 2300);
+    const t2 = setTimeout(() => setLabelsVisible(true), 1600);
+    const t3 = setTimeout(() => setFloating(true), 2300);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
+      clearTimeout(t3);
     };
   }, []);
 
@@ -87,7 +91,7 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
         opacity: entered ? 1 : 0,
         transform: entered ? "translateY(0)" : "translateY(24px)",
         transition:
-          "opacity 1s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 1s cubic-bezier(0.22,1,0.36,1) 0.3s",
+          "opacity 1s cubic-bezier(0.22,1,0.36,1) 0.85s, transform 1s cubic-bezier(0.22,1,0.36,1) 0.85s",
         animation: floating
           ? "isoFloatDown 7s ease-in-out 0s infinite"
           : "none",
@@ -98,7 +102,7 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
         opacity: entered ? 1 : 0,
         transform: entered ? "translateY(0)" : "translateY(24px)",
         transition:
-          "opacity 1s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 1s cubic-bezier(0.22,1,0.36,1) 0.3s",
+          "opacity 1s cubic-bezier(0.22,1,0.36,1) 0.85s, transform 1s cubic-bezier(0.22,1,0.36,1) 0.85s",
         animation: floating
           ? "isoFloatDown 7s ease-in-out 0s infinite"
           : "none",
@@ -111,7 +115,7 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
         opacity: entered ? 1 : 0,
         transform: entered ? "translateY(0)" : "translateY(-18px)",
         transition:
-          "opacity 1.1s cubic-bezier(0.22,1,0.36,1) 0.85s, transform 1.1s cubic-bezier(0.22,1,0.36,1) 0.85s",
+          "opacity 1.1s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 1.1s cubic-bezier(0.22,1,0.36,1) 0.3s",
         animation: floating
           ? "isoFloatUp 7s ease-in-out 0.2s infinite"
           : "none",
@@ -123,7 +127,7 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
         opacity: entered ? 1 : 0,
         transform: entered ? "translateY(0)" : "translateY(-18px)",
         transition:
-          "opacity 1.1s cubic-bezier(0.22,1,0.36,1) 0.85s, transform 1.1s cubic-bezier(0.22,1,0.36,1) 0.85s",
+          "opacity 1.1s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 1.1s cubic-bezier(0.22,1,0.36,1) 0.3s",
         animation: floating
           ? "isoFloatUp 7s ease-in-out 0.2s infinite"
           : "none",
@@ -131,7 +135,6 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
 
   return (
     <div
-      ref={mobile ? undefined : wrapperRef}
       style={{
         width: "100%",
         maxWidth: mobile ? `${MOBILE_MAX_W}px` : `${STAGE_W}px`,
@@ -140,15 +143,14 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
     >
       {/* Inner div: fixed size on desktop, scaled down to fit; fluid on mobile */}
       <div
+        ref={mobile ? undefined : wrapperRef}
         style={{
           position: "relative",
           width: mobile ? "100%" : `${STAGE_W}px`,
           height: mobile ? "auto" : `${STAGE_H}px`,
-          transformOrigin: "top left",
+          transformOrigin: "top center",
           transform:
-            !mobile && desktopScale < 1
-              ? `translateX(${(STAGE_W * (desktopScale - 1)) / 2}px) scale(${desktopScale})`
-              : undefined,
+            !mobile && desktopScale < 1 ? `scale(${desktopScale})` : undefined,
           marginBottom:
             !mobile && desktopScale < 1
               ? `${STAGE_H * (desktopScale - 1)}px`
@@ -163,6 +165,10 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
           @keyframes isoFloatUp {
             0%, 100% { transform: translateY(0);    }
             50%       { transform: translateY(-5px); }
+          }
+          @keyframes faceBorderFade {
+            0%, 100% { opacity: 0.6; }
+            50%      { opacity: 0.9; }
           }
           @keyframes iconGlow {
             0%      { opacity: 0; }
@@ -203,13 +209,19 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
         {mobile ? (
           <>
             <div style={topStyle}>
-              <TopElement colors={colors} tileWidth={TILE_W} mobile={mobile} />
+              <TopElement
+                colors={colors}
+                tileWidth={TILE_W}
+                mobile={mobile}
+                labelsVisible={labelsVisible}
+              />
             </div>
             <div style={bottomStyle}>
               <BottomElement
                 colors={colors}
                 tileWidth={TILE_W}
                 mobile={mobile}
+                labelsVisible={labelsVisible}
               />
             </div>
           </>
@@ -220,10 +232,16 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
                 colors={colors}
                 tileWidth={TILE_W}
                 mobile={mobile}
+                labelsVisible={labelsVisible}
               />
             </div>
             <div style={topStyle}>
-              <TopElement colors={colors} tileWidth={TILE_W} mobile={mobile} />
+              <TopElement
+                colors={colors}
+                tileWidth={TILE_W}
+                mobile={mobile}
+                labelsVisible={labelsVisible}
+              />
             </div>
           </>
         )}
@@ -244,7 +262,7 @@ export default function IsometricStage({ colors }: IsometricStageProps) {
             <li
               key={id}
               style={{
-                fontFamily: "system-ui, -apple-system, sans-serif",
+                fontFamily: FONT_FAMILY,
                 fontWeight: 700,
                 fontSize: "22px",
                 color: colors.label,
