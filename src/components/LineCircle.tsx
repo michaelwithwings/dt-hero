@@ -51,8 +51,8 @@ export default function LineCircle({
             <stop
               key={i}
               offset={s.offset}
-              stopColor={color}
               stopOpacity={s.opacity}
+              style={{ stopColor: color, transition: "stop-color 0.2s ease" }}
             />
           ))}
         </linearGradient>
@@ -65,7 +65,7 @@ export default function LineCircle({
         height={STEM_H}
         fill={`url(#${gradId})`}
       />
-      <circle cx={DOT_CX} cy={CY} r={DOT_R} fill={color} />
+      <circle cx={DOT_CX} cy={CY} r={DOT_R} style={{ fill: color, transition: "fill 0.2s ease" }} />
     </svg>
   );
 }

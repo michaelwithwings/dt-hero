@@ -11,10 +11,10 @@ export interface TopTileMeta {
   id: string;
   label: string;
   side: Side;
-  cx: number;
-  cy: number;
-  rx: number;
-  ry: number;
+  hitTop: number;
+  hitLeft: number;
+  hitWidth: number;
+  hitHeight: number;
   lx: number;
   ly: number;
   lineWidth: number;
@@ -72,10 +72,10 @@ export const TOP_TILES: TopTileMeta[] = [
     id: "top-left",
     label: "Payments",
     side: "left",
-    cx: 24,
-    cy: 35,
-    rx: 22,
-    ry: 14,
+    hitTop: 29,
+    hitLeft: 10,
+    hitWidth: 28,
+    hitHeight: 26,
     lx: 80,
     ly: 92,
     lineWidth: 80,
@@ -85,10 +85,10 @@ export const TOP_TILES: TopTileMeta[] = [
     id: "bottom",
     label: "Banking",
     side: "left",
-    cx: 50,
-    cy: 64,
-    rx: 22,
-    ry: 14,
+    hitTop: 52,
+    hitLeft: 37,
+    hitWidth: 28,
+    hitHeight: 26,
     lx: 189,
     ly: 159,
     lineWidth: 140,
@@ -98,10 +98,10 @@ export const TOP_TILES: TopTileMeta[] = [
     id: "top-center",
     label: "Card",
     side: "right",
-    cx: 50,
-    cy: 13,
-    rx: 22,
-    ry: 14,
+    hitTop: 8,
+    hitLeft: 36,
+    hitWidth: 28,
+    hitHeight: 26,
     lx: 250,
     ly: 18,
     lineWidth: 160,
@@ -111,10 +111,10 @@ export const TOP_TILES: TopTileMeta[] = [
     id: "top-right",
     label: "Recon & Settlement",
     side: "right",
-    cx: 76,
-    cy: 35,
-    rx: 22,
-    ry: 14,
+    hitTop: 29,
+    hitLeft: 62,
+    hitWidth: 28,
+    hitHeight: 26,
     lx: 394,
     ly: 92,
     lineWidth: 80,

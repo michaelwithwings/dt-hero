@@ -1,5 +1,26 @@
-import React from 'react'
-import { THEME_PRESETS } from '../theme.ts'
+import React, { useState, useEffect } from 'react'
+import { THEME_PRESETS, FONT_FAMILY } from '../theme.ts'
+
+function ScreenSize({ dim }: { dim: string }) {
+  const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight })
+  useEffect(() => {
+    const onResize = () => setSize({ w: window.innerWidth, h: window.innerHeight })
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+  return (
+    <span style={{
+      fontFamily: FONT_FAMILY,
+      fontSize: '10px',
+      fontWeight: 500,
+      letterSpacing: '0.1em',
+      color: dim,
+      fontVariantNumeric: 'tabular-nums',
+    }}>
+      {size.w} × {size.h}
+    </span>
+  )
+}
 
 interface ThemeControlsProps {
   hue:          number
@@ -40,7 +61,7 @@ export default function ThemeControls({
   }
 
   const labelStyle: React.CSSProperties = {
-    fontFamily:    'system-ui, -apple-system, sans-serif',
+    fontFamily:    FONT_FAMILY,
     fontSize:      '10px',
     fontWeight:    500,
     letterSpacing: '0.13em',
@@ -86,7 +107,7 @@ export default function ThemeControls({
   }
 
   const resetStyle: React.CSSProperties = {
-    fontFamily:    'system-ui, -apple-system, sans-serif',
+    fontFamily:    FONT_FAMILY,
     fontSize:      '10px',
     fontWeight:    500,
     letterSpacing: '0.1em',
@@ -165,22 +186,25 @@ export default function ThemeControls({
             <div style={toggleKnobStyle} />
           </div>
           <span style={{ ...labelStyle, letterSpacing: '0.06em' }}>
-            {darkMode ? 'Dark' : 'Light'}
+            {darkMode ? 'Light' : 'Dark'}
           </span>
         </div>
       </div>
 
-      {/* Reset */}
+      {/* Reset + screen size */}
       <div style={groupStyle}>
         <span style={{ ...labelStyle, opacity: 0 }}>·</span>
-        <button
-          style={resetStyle}
-          onClick={onReset}
-          onMouseEnter={(e) => handleResetHover(e, true)}
-          onMouseLeave={(e) => handleResetHover(e, false)}
-        >
-          Reset
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button
+            style={resetStyle}
+            onClick={onReset}
+            onMouseEnter={(e) => handleResetHover(e, true)}
+            onMouseLeave={(e) => handleResetHover(e, false)}
+          >
+            Reset
+          </button>
+          <ScreenSize dim={dim} />
+        </div>
       </div>
 
     </div>

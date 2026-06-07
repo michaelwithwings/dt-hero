@@ -1,3 +1,5 @@
+export const FONT_FAMILY = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
+
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
 // ─────────────────────────────────────────────────────────────────────────────
@@ -31,6 +33,7 @@ export interface Colors {
   iconHover: string
   iconHoverGlow1: string
   iconHoverGlow2: string
+  isDark: boolean
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -56,29 +59,30 @@ export const DEFAULT_DARKMODE  = true
 // ─────────────────────────────────────────────────────────────────────────────
 export function buildColors(hue: number, darkMode: boolean): Colors {
   return {
-    side:        `hsl(${hue}, 70%, 8%)`,
-    sideStroke:  `hsl(${hue}, 60%, 12%)`,
-    body:        `hsl(${hue}, 65%, 18%)`,
-    bodyStroke:  `hsl(${hue}, 55%, 24%)`,
-    face:        `hsl(${hue}, 60%, 25%)`,
-    faceStroke:  `hsl(${hue}, 50%, 32%)`,
-    inner:       `hsl(${hue}, 58%, 32%)`,
-    innerStroke: `hsl(${hue}, 48%, 40%)`,
+    side:        `hsl(${hue}, 85%, 8%)`,
+    sideStroke:  `hsl(${hue}, 75%, 12%)`,
+    body:        `hsl(${hue}, 90%, 18%)`,
+    bodyStroke:  `hsl(${hue}, 80%, 24%)`,
+    face:        `hsl(${hue}, 88%, 25%)`,
+    faceStroke:  `hsl(${hue}, 75%, 32%)`,
+    inner:       `hsl(${hue}, 85%, 32%)`,
+    innerStroke: `hsl(${hue}, 70%, 40%)`,
     icon:        `hsl(${hue}, 100%, 58%)`,
     iconGlow1:   `hsla(${hue}, 100%, 55%, 0.9)`,
     iconGlow2:   `hsla(${hue}, 100%, 50%, 0.4)`,
     logo:        `hsl(${hue}, 100%, 60%)`,
     logoGlow1:   `hsla(${hue}, 100%, 55%, 0.75)`,
     logoGlow2:   `hsla(${hue}, 100%, 50%, 0.35)`,
-    connector:   `hsl(${hue}, 90%, 55%)`,
-    label:       `hsl(${hue}, 90%, 55%)`,
-    labelHover:  `hsl(${hue}, 100%, 72%)`,
+    connector:   darkMode ? `hsl(${hue}, 90%, 55%)` : `hsl(${hue}, 88%, 25%)`,
+    label:       darkMode ? `hsl(${hue}, 90%, 55%)` : `hsl(${hue}, 88%, 25%)`,
+    labelHover:  darkMode ? `hsl(${hue}, 100%, 96%)` : `hsl(${hue}, 90%, 8%)`,
     bg:          darkMode ? '#000' : '#eef2f7',
     heading:     darkMode ? '#ffffff' : '#0a1628',
     glow:            `hsla(${hue}, 80%, 40%, 0.12)`,
-    perimeterStroke:  `hsl(${hue}, 100%, 72%)`,
+    perimeterStroke:  darkMode ? `hsl(${hue}, 100%, 72%)` : `hsl(${hue}, 100%, 50%)`,
     iconHover:        `hsl(${hue}, 60%, 80%)`,
     iconHoverGlow1:   `hsla(0, 0%, 100%, 0.9)`,
     iconHoverGlow2:   `hsla(0, 0%, 100%, 0.4)`,
+    isDark: darkMode,
   }
 }
