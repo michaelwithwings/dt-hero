@@ -9,12 +9,18 @@ interface TopElementProps {
   tileWidth: number;
   mobile?: boolean;
   labelsVisible?: boolean;
+  loggedIn?: boolean;
+  getText?: (id: string, fallback: string) => string;
+  setText?: (id: string, value: string) => void;
 }
 
 export default function TopElement({
   colors,
   mobile,
   labelsVisible = false,
+  loggedIn = false,
+  getText,
+  setText,
 }: TopElementProps) {
   const [hoveredTile, setHoveredTile] = useState<string | null>(null);
   const perimeterRef = useRef<SVGPathElement>(null);
@@ -513,7 +519,7 @@ export default function TopElement({
               }}
             >
               <TileLabel
-                label={label}
+                label={getText ? getText(id, label) : label}
                 side={side}
                 colors={colors}
                 hovered={hoveredTile === id}
@@ -521,6 +527,9 @@ export default function TopElement({
                 gradientStops={gradientStops}
                 onMouseEnter={() => setHoveredTile(id)}
                 onMouseLeave={() => setHoveredTile(null)}
+                loggedIn={loggedIn}
+                editId={id}
+                onCommitLabel={setText ? (next) => setText(id, next) : undefined}
               />
             </div>
           ),

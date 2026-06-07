@@ -1,0 +1,52 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(chromium-cli --session hero)",
+      "Bash(npx --yes playwright install chromium --with-deps > /tmp/pw_install.log 2>&1 ; tail -5 /tmp/pw_install.log)",
+      "Bash(node test-edit.mjs)",
+      "Bash(npm root *)",
+      "Bash(node -e \"require.resolve\\('playwright'\\)\")",
+      "Bash(npm ls *)",
+      "Bash(git checkout *)",
+      "Bash(mkdir -p /tmp/pwtest)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(cp /tmp/pwtest/*.png \"c:\\\\Users\\\\micha\\\\OneDrive\\\\Documents\\\\DirectTransact\\\\sandbox/\")",
+      "Bash(cp \"c:\\\\Users\\\\micha\\\\OneDrive\\\\Documents\\\\DirectTransact\\\\sandbox\\\\test-edit.mjs\" /tmp/pwtest/test-edit.mjs)",
+      "Bash(rm -f *.png)",
+      "Bash(cd \"c:\\\\Users\\\\micha\\\\OneDrive\\\\Documents\\\\DirectTransact\\\\sandbox\" && rm -f test-edit.mjs shot-*.png && git status --porcelain)",
+      "Bash(tasklist)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //F //PID 29240)",
+      "Bash(npx tsc *)",
+      "Bash(node test-edit2.mjs)",
+      "Bash(node -e \"console.log\\(process.cwd\\(\\)\\)\")",
+      "Bash(sed -i 's/await reconEditBtn.click\\(\\);/await reconEditBtn.click\\({ force: true }\\);/' /tmp/pwtest/test-edit2.mjs)",
+      "Bash(sed -i 's/await page.locator\\(.button\\\\[aria-label=\"Edit Heading\"\\\\].\\).click\\(\\);/await page.locator\\(`button[aria-label=\"Edit Heading\"]`\\).click\\({ force: true }\\);/' /tmp/pwtest/test-edit2.mjs)",
+      "Bash(sed -i \"s/await page.locator\\('button\\\\[aria-label=\\\\\"Edit Label\\\\\"\\\\]'\\).first\\(\\).click\\(\\);/await page.locator\\('button[aria-label=\\\\\"Edit Label\\\\\"]'\\).first\\(\\).click\\({ force: true }\\);/\" /tmp/pwtest/test-edit2.mjs)",
+      "Bash(sed -i \"s/div:has\\(> div > input\\)/div:has\\(> div > h1, .__never__\\)/g\" /tmp/pwtest/test-edit2.mjs)",
+      "Bash(cat)",
+      "Bash(node test-edit3.mjs)",
+      "Bash(node test-edit4.mjs)",
+      "Bash(cd \"c:\\\\Users\\\\micha\\\\OneDrive\\\\Documents\\\\DirectTransact\\\\sandbox\" && rm -f fix-*.png && netstat -ano | grep 5173 | head -1)",
+      "Bash(yarn dev *)",
+      "Read(//tmp/**)",
+      "Bash(cat C:\\\\\\\\Users\\\\\\\\micha\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\claude\\\\\\\\c--Users-micha-OneDrive-Documents-DirectTransact-sandbox\\\\\\\\0016fa6a-29a2-4b25-adb7-7df67713664c\\\\\\\\tasks\\\\\\\\bu6h0i16b.output)",
+      "Bash(node check-icons.mjs)",
+      "Bash(cmd //c \"node check-icons.mjs\")",
+      "Bash(find /c/tmp -maxdepth 2 -iname \"pwtest*\" 2>/dev/null; find / -maxdepth 4 -iname \"pwtest\" 2>/dev/null)",
+      "Read(//c//**)",
+      "Bash(cp /tmp/pwtest/icons-*.png \"/c/Users/micha/OneDrive/Documents/DirectTransact/sandbox/.claude/\")",
+      "Bash(cp /tmp/pwtest/icons-*.png /c/tmp/shots/)",
+      "Bash(mkdir -p /c/tmp/shots && cp /tmp/pwtest/icons-*.png /c/tmp/shots/ && ls /c/tmp/shots)"
+    ],
+    "additionalDirectories": [
+      "\\tmp",
+      "\\tmp\\pwtest",
+      "C:\\Users\\micha\\OneDrive\\Documents\\DirectTransact\\sandbox",
+      "c:\\tmp\\pwtest"
+    ]
+  }
+}
