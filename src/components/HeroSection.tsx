@@ -12,7 +12,9 @@ import ThemeControls from "./ThemeControls.tsx";
 import IsometricStage from "./IsometricStage.tsx";
 import EditIconButton from "./EditIconButton.tsx";
 import { useLocalStorage } from "../hooks/useLocalStorage.ts";
+import { useIsMobile } from "../hooks/useIsMobile.ts";
 
+const MOBILE_BREAKPOINT = 600;
 const LOGIN_STORAGE_KEY = "dt-hero-login";
 const THEME_STORAGE_KEY = "dt-hero-theme";
 const TEXT_STORAGE_KEY = "dt-hero-text";
@@ -50,6 +52,7 @@ export default function HeroSection() {
   const [loggedIn, setLoggedIn] = useState<boolean>(
     () => localStorage.getItem(LOGIN_STORAGE_KEY) === "true",
   );
+  const mobile = useIsMobile(MOBILE_BREAKPOINT);
 
   const getText = useCallback(
     (id: string, fallback: string) => textOverrides[id] ?? fallback,
@@ -107,6 +110,14 @@ export default function HeroSection() {
     resetTheme();
     resetText();
   }, [resetTheme, resetText]);
+
+  const isThemeDefault =
+    hue === DEFAULT_HUE &&
+    darkMode === DEFAULT_DARKMODE &&
+    saturation === DEFAULT_SATURATION &&
+    lightness === DEFAULT_LIGHTNESS;
+
+  const isTextDefault = Object.keys(textOverrides).length === 0;
 
   const heading = getText(HEADING_TEXT_ID, DEFAULT_HEADING);
 
@@ -219,7 +230,7 @@ export default function HeroSection() {
         <div
           style={{
             width: "100%",
-            padding: "32px 24px 8px",
+            padding: mobile ? "12px 24px 8px" : "32px 24px 8px",
             overflow: "hidden",
             maxHeight: loggedIn ? `${controlsHeight + 40}px` : "0px",
             opacity: loggedIn ? 1 : 0,
@@ -239,6 +250,7 @@ export default function HeroSection() {
               darkMode={darkMode}
               setDarkMode={setDarkMode}
               onReset={handleReset}
+              canReset={!isThemeDefault || !isTextDefault}
               position="bottom"
             />
           </div>

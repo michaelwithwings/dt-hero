@@ -38,11 +38,12 @@ export interface Colors {
 // ─────────────────────────────────────────────────────────────────────────────
 // PRESETS
 // ─────────────────────────────────────────────────────────────────────────────
-// 36 swatches (3 rows of 6) spanning red (0°) through green (120°) to blue (240°)
-const PRESET_COUNT     = 18
-const PRESET_HUE_RANGE = 240
+// 24 swatches (3 rows of 8) spanning the full hue wheel: red (0°) through green,
+// blue, and purple/magenta back toward red (360°)
+const PRESET_COUNT     = 24
+const PRESET_HUE_RANGE = 360
 export const THEME_PRESETS: ThemePreset[] = Array.from({ length: PRESET_COUNT }, (_, i) => ({
-  hue: Math.round((i / (PRESET_COUNT - 1)) * PRESET_HUE_RANGE),
+  hue: Math.round((i / PRESET_COUNT) * PRESET_HUE_RANGE),
 }))
 
 export const DEFAULT_HUE        = 205

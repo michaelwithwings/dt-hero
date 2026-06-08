@@ -12,17 +12,28 @@ interface EditTextDialogProps {
   onCancel: () => void;
 }
 
-export default function EditTextDialog({ title, initialValue, maxLength, colors, onSave, onCancel }: EditTextDialogProps) {
+export default function EditTextDialog({
+  title,
+  initialValue,
+  maxLength,
+  colors,
+  onSave,
+  onCancel,
+}: EditTextDialogProps) {
   const [value, setValue] = useState(initialValue);
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
-  const dragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
+  const dragRef = useRef<{
+    startX: number;
+    startY: number;
+    originX: number;
+    originY: number;
+  } | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   const dark = colors.isDark;
   const panelBg = dark ? "#15191f" : "#ffffff";
   const borderClr = dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)";
   const textClr = dark ? "#fff" : "#0a1628";
-  const dim = dark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)";
 
   const onDragStart = useCallback((e: React.MouseEvent) => {
     const rect = dialogRef.current?.getBoundingClientRect();
@@ -31,12 +42,20 @@ export default function EditTextDialog({ title, initialValue, maxLength, colors,
     // absolute positioning, so the first drag move doesn't snap it.
     const origin = { x: rect.left, y: rect.top };
     setPos(origin);
-    dragRef.current = { startX: e.clientX, startY: e.clientY, originX: origin.x, originY: origin.y };
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      originX: origin.x,
+      originY: origin.y,
+    };
 
     const onMove = (ev: MouseEvent) => {
       const d = dragRef.current;
       if (!d) return;
-      setPos({ x: d.originX + (ev.clientX - d.startX), y: d.originY + (ev.clientY - d.startY) });
+      setPos({
+        x: d.originX + (ev.clientX - d.startX),
+        y: d.originY + (ev.clientY - d.startY),
+      });
     };
     const onUp = () => {
       dragRef.current = null;
@@ -108,7 +127,8 @@ export default function EditTextDialog({ title, initialValue, maxLength, colors,
             fontWeight: 700,
             letterSpacing: "0.08em",
             textTransform: "uppercase",
-            color: dim,
+            color: "#fff",
+            background: colors.icon,
             padding: "14px 18px",
             borderBottom: `1px solid ${colors.label}`,
             cursor: "grab",
@@ -134,13 +154,20 @@ export default function EditTextDialog({ title, initialValue, maxLength, colors,
               fontSize: "15px",
               color: textClr,
               background: dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)",
-              border: `1px solid ${borderClr}`,
+              border: `1px solid ${colors.icon}`,
               borderRadius: "8px",
               padding: "10px 12px",
               outline: "none",
             }}
           />
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "16px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: "10px",
+              marginTop: "16px",
+            }}
+          >
             <button style={buttonStyle(false)} onClick={onCancel}>
               Cancel
             </button>

@@ -10,16 +10,17 @@ interface EditableTextProps {
   maxLength?: number;
   colors: Colors;
   onCommit: (value: string) => void;
+  iconStyle?: React.CSSProperties;
   children: React.ReactNode;
 }
 
-export default function EditableText({ id, loggedIn, title, value, maxLength, colors, onCommit, children }: EditableTextProps) {
+export default function EditableText({ id, loggedIn, title, value, maxLength, colors, onCommit, iconStyle, children }: EditableTextProps) {
   if (!loggedIn) return <>{children}</>;
 
   return (
     <span style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: "8px" }}>
       {children}
-      <EditIconButton id={id} title={title} value={value} maxLength={maxLength} colors={colors} onCommit={onCommit} />
+      <EditIconButton id={id} title={title} value={value} maxLength={maxLength} colors={colors} onCommit={onCommit} style={iconStyle} />
     </span>
   );
 }

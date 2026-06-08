@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import TopElement from "./TopElement.tsx";
 import BottomElement from "./BottomElement.tsx";
 import EditableText from "./EditableText.tsx";
+import { useIsMobile } from "../hooks/useIsMobile.ts";
 import { TOP_TILES, BOTTOM_TILE } from "../tileData.ts";
 import { FONT_FAMILY } from "../theme.ts";
 import type { Colors } from "../theme.ts";
@@ -26,15 +27,20 @@ interface IsometricStageProps {
   setText?: (id: string, value: string) => void;
 }
 
-export default function IsometricStage({ colors, loggedIn = false, getText, setText }: IsometricStageProps) {
-  const resolveText = (id: string, fallback: string) => (getText ? getText(id, fallback) : fallback);
+export default function IsometricStage({
+  colors,
+  loggedIn = false,
+  getText,
+  setText,
+}: IsometricStageProps) {
+  const resolveText = (id: string, fallback: string) =>
+    getText ? getText(id, fallback) : fallback;
   const commitText = (id: string, value: string): void => setText?.(id, value);
   const [entered, setEntered] = useState<boolean>(false);
   const [labelsVisible, setLabelsVisible] = useState<boolean>(false);
+  const [hoveredTile, setHoveredTile] = useState<string | null>(null);
   const [floating, setFloating] = useState<boolean>(false);
-  const [mobile, setMobile] = useState<boolean>(
-    () => window.innerWidth < MOBILE_BREAKPOINT,
-  );
+  const mobile = useIsMobile(MOBILE_BREAKPOINT);
   const [desktopScale, setDesktopScale] = useState<number>(1);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -51,12 +57,6 @@ export default function IsometricStage({ colors, loggedIn = false, getText, setT
       clearTimeout(t2);
       clearTimeout(t3);
     };
-  }, []);
-
-  useEffect(() => {
-    const onResize = () => setMobile(window.innerWidth < MOBILE_BREAKPOINT);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   useEffect(() => {
@@ -164,6 +164,10 @@ export default function IsometricStage({ colors, loggedIn = false, getText, setT
         }}
       >
         <style>{`
+          @keyframes mobileLabelIn {
+            from { opacity: 0; transform: translateX(-24px); }
+            to   { opacity: 1; transform: translateX(0); }
+          }
           @keyframes isoFloatDown {
             0%, 100% { transform: translateY(0);   }
             50%       { transform: translateY(6px); }
@@ -223,6 +227,8 @@ export default function IsometricStage({ colors, loggedIn = false, getText, setT
                 loggedIn={loggedIn}
                 getText={resolveText}
                 setText={commitText}
+                hoveredTile={hoveredTile}
+                setHoveredTile={setHoveredTile}
               />
             </div>
             <div style={bottomStyle}>
@@ -234,6 +240,8 @@ export default function IsometricStage({ colors, loggedIn = false, getText, setT
                 loggedIn={loggedIn}
                 getText={resolveText}
                 setText={commitText}
+                hovered={hoveredTile === BOTTOM_TILE.id}
+                setHovered={(h) => setHoveredTile(h ? BOTTOM_TILE.id : null)}
               />
             </div>
           </>
@@ -248,6 +256,8 @@ export default function IsometricStage({ colors, loggedIn = false, getText, setT
                 loggedIn={loggedIn}
                 getText={resolveText}
                 setText={commitText}
+                hovered={hoveredTile === BOTTOM_TILE.id}
+                setHovered={(h) => setHoveredTile(h ? BOTTOM_TILE.id : null)}
               />
             </div>
             <div style={topStyle}>
@@ -259,6 +269,8 @@ export default function IsometricStage({ colors, loggedIn = false, getText, setT
                 loggedIn={loggedIn}
                 getText={resolveText}
                 setText={commitText}
+                hoveredTile={hoveredTile}
+                setHoveredTile={setHoveredTile}
               />
             </div>
           </>
@@ -276,24 +288,42 @@ export default function IsometricStage({ colors, loggedIn = false, getText, setT
             gap: loggedIn ? "0px" : "8px",
           }}
         >
-          {[...TOP_TILES, BOTTOM_TILE].map(({ id, label }) => {
+          {[...TOP_TILES, BOTTOM_TILE].map(({ id, label }, index) => {
             const text = resolveText(id, label);
             return (
               <li
                 key={id}
+                onClick={() =>
+                  setHoveredTile(hoveredTile === id ? null : id)
+                }
                 style={{
                   fontFamily: FONT_FAMILY,
                   fontWeight: 700,
                   fontSize: "22px",
                   lineHeight: loggedIn ? 1.1 : "normal",
-                  color: colors.label,
+                  color: hoveredTile === id ? colors.labelHover : colors.label,
                   letterSpacing: "0.01em",
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
+                  cursor: "pointer",
+                  transition: "color 0.2s",
+                  opacity: labelsVisible ? 1 : 0,
+                  animation: labelsVisible
+                    ? `mobileLabelIn 0.5s ease-out ${index * 90}ms both`
+                    : "none",
                 }}
               >
-                <EditableText id={id} loggedIn={loggedIn} title="Edit Label Text" value={text} maxLength={25} colors={colors} onCommit={(next: string) => commitText(id, next)}>
+                <EditableText
+                  id={id}
+                  loggedIn={loggedIn}
+                  title="Edit Label Text"
+                  value={text}
+                  maxLength={25}
+                  colors={colors}
+                  onCommit={(next: string) => commitText(id, next)}
+                  iconStyle={{ width: "28px", height: "28px", fontSize: "22" }}
+                >
                   {text}
                 </EditableText>
               </li>
