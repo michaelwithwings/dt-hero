@@ -142,7 +142,7 @@ export default function HeroSection() {
     color: colors.heading,
     textAlign: "center",
     marginBottom: "40px",
-    maxWidth: "620px",
+    maxWidth: "684px",
     transition: "color 0.4s",
   };
 
