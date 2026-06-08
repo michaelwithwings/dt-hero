@@ -36,14 +36,14 @@ A React/Vite/TypeScript landing page for DirectTransact, featuring an animated i
 
 ## Current State
 
+App is feature-complete and demo-ready.
+
 - Isometric stage with entrance animation and continuous float loop
 - Ambient perimeter stroke-draw animation on the 4-tile group (every ~14s)
 - Hover states on all tiles: glow effect + inner face stroke-draw trace on label hover
-- Theme controls (hue slider, dark/light toggle, presets) — visible on page, to be moved to a hidden drawer/modal
-- Responsive mobile layout in progress
+- Theme controls (hue slider, dark/light toggle, presets)
+- Responsive mobile layout complete (simplified labels, no LineCircle connectors below 600px)
 
 ## Pending Work
 
-- Responsive mobile layout (below 600px: simplified labels, no LineCircle connectors)
-- Theme controls: move to a hidden drawer or draggable modal (keep accessible but out of the way)
 - Click handlers on tiles linking to product pages (deferred)
