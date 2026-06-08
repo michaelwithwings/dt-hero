@@ -12,10 +12,14 @@ interface BottomElementProps {
   loggedIn?: boolean;
   getText?: (id: string, fallback: string) => string;
   setText?: (id: string, value: string) => void;
+  hovered?: boolean;
+  setHovered?: (hovered: boolean) => void;
 }
 
-export default function BottomElement({ colors, mobile, labelsVisible = false, loggedIn = false, getText, setText }: BottomElementProps) {
-  const [hovered, setHovered] = useState<boolean>(false);
+export default function BottomElement({ colors, mobile, labelsVisible = false, loggedIn = false, getText, setText, hovered: hoveredProp, setHovered: setHoveredProp }: BottomElementProps) {
+  const [hoveredState, setHoveredState] = useState<boolean>(false);
+  const hovered = setHoveredProp ? hoveredProp ?? false : hoveredState;
+  const setHovered = setHoveredProp ?? setHoveredState;
   const perimeterRef = useRef<SVGPathElement>(null);
   const innerFaceRef = useRef<SVGPathElement>(null);
 

@@ -12,6 +12,8 @@ interface TopElementProps {
   loggedIn?: boolean;
   getText?: (id: string, fallback: string) => string;
   setText?: (id: string, value: string) => void;
+  hoveredTile?: string | null;
+  setHoveredTile?: (id: string | null) => void;
 }
 
 export default function TopElement({
@@ -21,8 +23,12 @@ export default function TopElement({
   loggedIn = false,
   getText,
   setText,
+  hoveredTile: hoveredTileProp,
+  setHoveredTile: setHoveredTileProp,
 }: TopElementProps) {
-  const [hoveredTile, setHoveredTile] = useState<string | null>(null);
+  const [hoveredTileState, setHoveredTileState] = useState<string | null>(null);
+  const hoveredTile = setHoveredTileProp ? hoveredTileProp ?? null : hoveredTileState;
+  const setHoveredTile = setHoveredTileProp ?? setHoveredTileState;
   const perimeterRef = useRef<SVGPathElement>(null);
   const faceRefs = useRef<Record<string, SVGPathElement | null>>({});
 
