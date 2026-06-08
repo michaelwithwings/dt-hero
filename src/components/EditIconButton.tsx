@@ -27,7 +27,7 @@ export default function EditIconButton({
   const iconSize = (style?.fontSize as string | number | undefined) ?? "22";
 
   return (
-    <span style={{ position: "relative", display: "inline-flex" }}>
+    <span style={{ position: "relative", display: "inline-flex", ...style }}>
       <button
         type="button"
         aria-label={`Edit ${title}`}
